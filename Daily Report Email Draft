@@ -1,0 +1,38 @@
+import win32com.client
+
+def create_outlook_draft(subject, body, to=None, cc=None, attachments=None):
+    outlook = win32com.client.Dispatch("Outlook.Application")
+    mail = outlook.CreateItem(0)  # 0 = Mail item
+
+    if to:
+        mail.To = to
+    if cc:
+        mail.CC = cc
+
+    mail.Subject = subject
+    mail.Body = body
+
+    if attachments:
+        for file in attachments:
+            mail.Attachments.Add(file)
+
+    mail.Save()      # Saves it to Drafts
+    mail.Display()   # Opens it for preview
+
+# Call the function with test values
+create_outlook_draft(
+    subject="Test email: Skyblue users per country",
+    body= """Good morning Matt,
+
+Please see attached.
+
+Regards,
+Edgar Contreras | CYSA +
+Sky Blue SOC Team
+ZTI Solutions, LLC
+240-408-0186 (Mobile)
+""",
+
+    to="Syed.Mazher-CTR@ecstech.com",
+    attachments=[]
+)
